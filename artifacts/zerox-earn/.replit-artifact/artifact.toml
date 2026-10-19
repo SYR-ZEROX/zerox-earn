@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "ZEROX EARN"
+description = "A rewards platform where members earn ZX Coins through offerwalls, track progress, request cashouts, and compete on a leaderboard, with admin tools for offerwall setup and payout management."
+version = "1.0.0"
+id = "artifacts/zerox-earn"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25667
+
+[services.development]
+run = "pnpm --filter @workspace/zerox-earn run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/zerox-earn", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/zerox-earn/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25667"
+BASE_PATH = "/"

@@ -1,0 +1,71 @@
+Act as an elite Full-Stack Developer and UI/UX Designer. Build a complete, production-ready, full-stack GPT (Get-Paid-To) web application named "ZEROX EARN". 
+
+CRITICAL INSTRUCTION: Build the entire application with real authentication, database integration, all pages, and an Admin Panel so I do not have to write or edit any code manually. Everything must work out of the box.
+
+### 1. VISUAL IDENTITY & THEME (Cyber/Gaming Dark UI)
+- Language: English-only (LTR).
+- Fonts: Use 'Space Grotesk' for numbers/headings and 'Inter' for body text (import from Google Fonts).
+- Color Palette:
+  - Main Background: Deep Obsidian (`#0B0E14`)
+  - Surface / Cards / Sidebar: Dark Slate (`#151A23`) with subtle borders (`#1E293B`)
+  - Primary Accent: Neon Emerald (`#00E676`) for primary buttons, balances, and active states.
+  - Secondary Accent: Electric Violet (`#7C3AED`) for VIP badges, XP bars, and highlights.
+  - Primary Text: Crisp Silver/White (`#F8FAFC`)
+  - Secondary Text: Cool Gray (`#94A3B8`)
+- Visual Effects: Glassmorphism on the top navbar (`backdrop-blur-md`), subtle neon glow on card hover, and smooth transitions.
+
+### 2. AUTHENTICATION & USER SYSTEM (Database-Backed)
+- Create a real, working authentication system (Sign Up, Login, Logout) using sessions/JWT and a local SQLite or PostgreSQL database.
+- Each registered user must have:
+  - `id` (Unique User ID / SubID - very important as it will be passed to Offerwall iframes)
+  - `username`
+  - `email`
+  - `password_hash`
+  - `balance` (in ZX Coins, default: 0)
+  - `xp` (default: 0) & `level` (default: 1)
+  - `role` ('admin' or 'user'). *Automatically make the first registered user an 'admin', AND seed a default admin account: email: `admin@zerox.com`, password: `admin123`.*
+
+### 3. GLOBAL LAYOUT & NAVIGATION
+- **Top Live-Feed Ticker:** A sleek, horizontal auto-scrolling bar at the very top showing simulated/recent live earnings (e.g., "User Alex99 just earned 1,250 ZX from Upwall", "Sarah_X earned 800 ZX from Revtoo").
+- **Top Navbar:** Shows "ZEROX EARN" custom glowing logo, User's Level progress bar, Live Balance badge in Neon Emerald (`0 ZX Coins`), and User Profile / Logout button.
+- **Left Sidebar Navigation (Collapsible on mobile):**
+  - **Main Menu:**
+    - `Dashboard / Earn` (`/dashboard`)
+    - `Cashout / Shop` (`/cashout`)
+    - `Leaderboard` (`/leaderboard`)
+    - `Profile & History` (`/profile`)
+  - **Offerwall Partners (5 Dedicated Pages - Separate Links):**
+    - `MoOffers` (`/earn/mooffers`)
+    - `Offery` (`/earn/offery`)
+    - `Upwall` (`/earn/upwall`)
+    - `Gimiwall` (`/earn/gimiwall`)
+    - `Revtoo` (`/earn/revtoo`)
+  - **Admin Menu (Visible to Admin role):**
+    - `Admin Control Panel` (`/admin`)
+
+### 4. CORE PAGES & FUNCTIONALITY
+1. **Landing / Auth Page (`/`):**
+   - High-converting futuristic hero section for "ZEROX EARN" with Login / Register forms.
+2. **Main Dashboard (`/dashboard`):**
+   - Welcome banner showing user's `User ID (SubID)`, current balance, and Level.
+   - Quick-access cards to the 5 Offerwall Partners (`MoOffers`, `Offery`, `Upwall`, `Gimiwall`, `Revtoo`) with custom badges like "Popular", "Fast Payout", or "+20% Bonus". Clicking any card navigates to its dedicated page.
+3. **Dedicated Offerwall Pages (`/earn/[provider]`):**
+   - Support routes for `mooffers`, `offery`, `upwall`, `gimiwall`, and `revtoo`.
+   - Page Header: Displays Provider Name, Status ("Online"), User's current SubID, and a "Reload Wall" button.
+   - **Dynamic Iframe Container:** A full-width, tall (`min-h-[850px]`), responsive container that loads the specific provider's iframe URL from the database.
+   - **Crucial Logic:** The system must automatically replace the `{user_id}` placeholder in the provider's URL with the currently logged-in user's actual `id`. (If no URL is set by the admin yet, display a sleek dark placeholder screen showing the user's `SubID` and stating: "Offerwall URL for [Provider Name] can be configured in the Admin Panel").
+4. **Cashout / Shop Page (`/cashout`):**
+   - Grid of withdrawal options (USDT TRC20, Litecoin, PayPal, PUBG UC, Free Fire Diamonds).
+   - Clicking an option opens a modal where the user enters their wallet/ID and submits a withdrawal request (deducts balance and saves to DB).
+5. **Leaderboard (`/leaderboard`) & Profile (`/profile`):**
+   - Leaderboard showing top users by ZX Coins.
+   - Profile showing user's SubID, account details, and withdrawal history.
+
+### 5. NO-CODE ADMIN PANEL (`/admin`) - VERY IMPORTANT
+Build a complete Admin Dashboard so I can manage the site without touching the code:
+- **Manage Offerwall URLs:** A form where I can paste/update the Iframe URL for all 5 providers (`MoOffers`, `Offery`, `Upwall`, `Gimiwall`, `Revtoo`) using `{user_id}` as a dynamic macro (e.g., `https://upwall.com/wall?pub=123&subid={user_id}`). Save these in the database.
+- **Manage Users:** View all registered users, their `SubID`, and a button to manually **Add / Deduct ZX Coins** to any user's balance.
+- **Manage Withdrawals:** View pending cashout requests with "Approve" or "Reject" buttons.
+- **Universal Postback Endpoint (`/api/postback`):** Create a ready-to-use GET/POST API endpoint (`/api/postback?user_id={user_id}&reward={amount}&provider={provider}&tx_id={tx_id}&secret={secret}`) that automatically credits the user's balance in the database when called in the future, and display the exact Postback URL format inside the Admin Panel for easy copying.
+
+Ensure there are no broken links, no missing imports, and that the database tables are automatically migrated and seeded with the 5 offerwall providers (`MoOffers`, `Offery`, `Upwall`, `Gimiwall`, `Revtoo`) on startup.
