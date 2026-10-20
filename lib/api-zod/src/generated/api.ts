@@ -158,6 +158,18 @@ export const GetLeaderboardResponse = zod.array(GetLeaderboardResponseItem)
 
 
 /**
+ * @summary Get recent public reward activity
+ */
+export const GetLiveFeedResponseItem = zod.object({
+  "username": zod.string(),
+  "amount": zod.number(),
+  "provider": zod.string(),
+  "createdAt": zod.coerce.date()
+})
+export const GetLiveFeedResponse = zod.array(GetLiveFeedResponseItem)
+
+
+/**
  * @summary Get account and withdrawal history
  */
 export const GetProfileResponse = zod.object({

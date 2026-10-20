@@ -118,6 +118,13 @@ export interface LeaderboardEntry {
   balance: number;
 }
 
+export interface LiveFeedItem {
+  username: string;
+  amount: number;
+  provider: string;
+  createdAt: string;
+}
+
 export type WithdrawalStatus = typeof WithdrawalStatus[keyof typeof WithdrawalStatus];
 
 

@@ -32,6 +32,7 @@ import type {
   GetPostbackParams,
   HealthStatus,
   LeaderboardEntry,
+  LiveFeedItem,
   LoginInput,
   Offerwall,
   OfferwallUpdateInput,
@@ -698,6 +699,83 @@ export function useGetLeaderboard<TData = Awaited<ReturnType<typeof getLeaderboa
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetLeaderboardQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetLiveFeedUrl = () => {
+
+
+
+
+  return `/api/live-feed`
+}
+
+/**
+ * @summary Get recent public reward activity
+ */
+export const getLiveFeed = async ( options?: Parameters<typeof customFetch>[1]): Promise<LiveFeedItem[]> => {
+
+  return customFetch<LiveFeedItem[]>(getGetLiveFeedUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetLiveFeedQueryKey = () => {
+    return [
+    `/api/live-feed`
+    ] as const;
+    }
+
+
+export const getGetLiveFeedQueryOptions = <TData = Awaited<ReturnType<typeof getLiveFeed>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLiveFeed>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetLiveFeedQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLiveFeed>>> = ({ signal }) => getLiveFeed({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLiveFeed>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetLiveFeedQueryResult = NonNullable<Awaited<ReturnType<typeof getLiveFeed>>>
+export type GetLiveFeedQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get recent public reward activity
+ */
+
+export function useGetLiveFeed<TData = Awaited<ReturnType<typeof getLiveFeed>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLiveFeed>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetLiveFeedQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

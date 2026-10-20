@@ -23,6 +23,7 @@ export * from './dashboardData';
 export * from './getPostbackParams';
 export * from './healthStatus';
 export * from './leaderboardEntry';
+export * from './liveFeedItem';
 export * from './loginInput';
 export * from './offerwall';
 export * from './offerwallUpdateInput';

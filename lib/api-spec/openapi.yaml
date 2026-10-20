@@ -141,6 +141,20 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/LeaderboardEntry"
+  /live-feed:
+    get:
+      operationId: getLiveFeed
+      tags: [earn]
+      summary: Get recent public reward activity
+      responses:
+        "200":
+          description: Latest credited rewards
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LiveFeedItem"
   /profile:
     get:
       operationId: getProfile
@@ -556,6 +570,14 @@ components:
         level: { type: integer }
         balance: { type: number }
       required: [rank, username, level, balance]
+    LiveFeedItem:
+      type: object
+      properties:
+        username: { type: string }
+        amount: { type: number }
+        provider: { type: string }
+        createdAt: { type: string, format: date-time }
+      required: [username, amount, provider, createdAt]
     ProfileData:
       type: object
       properties:
